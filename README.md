@@ -4,7 +4,7 @@
 Datasets:
 
 Customers.xls:
-This file contains comprehensive information about customers in the e-commerce retail dataset. It includes attributes such as Customer Id, Dob, Gender and City code that helps characterize the customer base. The schema for this dataset is 7 varaible and 5,647 records.
+This file contains comprehensive information about customers in the e-commerce retail dataset. It includes attributes such as Customer Id, Dob, Gender and City code that helps characterize the customer base. The schema for this dataset is 4 varaible and 5,647 records.
 
 Transactions.xls:
 The file contains detailed records of all transactions conducted within the e-commerce platform. Each transaction entry typically includes data such as transaction ID, date and time of purchase, customer ID, product details (such as product category and product sub category), quantity purchased, and total transaction amount. This file serves as the primary source for analyzing sales performance, identifying popular products, understanding buying patterns, and conducting various financial analysis. The schema for this dataset is 10 variables and 23,053 records
