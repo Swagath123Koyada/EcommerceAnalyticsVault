@@ -3,7 +3,7 @@
 
 # Tools Used : SQL Server, SSMS
 
-# Datasets:
+# Datasets: Customers.xlsx, Transactions.xlsx, Prod_cat_info.xlsx
 
 # Customers:
 This file contains comprehensive information about customers in the e-commerce retail dataset. It includes attributes such as Customer Id, Dob, Gender and City code that helps characterize the customer base. The schema for this dataset is 4 varaible and 5,647 records.
