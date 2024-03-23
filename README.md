@@ -1,7 +1,4 @@
-# <div align="center">
-  <h1>EcommerceAnalyticsVault
-</h1>
-</div>
+# <div align="center"> <h1> E-Commerce Retail Data Analysis </h1> </div>
 "Welcome to EcommerceAnalyticsVault, your go-to destination for comprehensive e-commerce retail data analysis. This repository is dedicated to exploring and understanding trends, patterns, and insights within the e-commerce sector. Leveraging SQL as the primary analytical tool, this repository offers a deep dive into customer behavior, sales trends, and product performance within the dynamic e-commerce landscape. 
 
 # Tools Used : SQL Server, SSMS
