@@ -8,10 +8,10 @@
 # Datasets: Customers.xlsx, Transactions.xlsx, Prod_cat_info.xlsx
 
 # Customers:
-This file contains comprehensive information about customers in the e-commerce retail dataset. It includes attributes such as Customer Id, Dob, Gender and City code that helps characterize the customer base. The schema for this dataset is 4 varaible and 5,647 records.
+The Customers table contains comprehensive information about the customers who interact with the e-commerce platform. It serves as a foundational dataset for understanding the demographics, preferences, and behaviors of the customer base. The columns Customer table have are Cusotmer Id, Dob, Gender and City code. The schema for this Customer tables are 4 variables and 5,647 rows.
 
 # Transactions:
-The file contains detailed records of all transactions conducted within the e-commerce platform. Each transaction entry typically includes data such as transaction ID, date and time of purchase, customer ID, product details (such as product category and product sub category), quantity purchased, and total transaction amount. This file serves as the primary source for analyzing sales performance, identifying popular products, understanding buying patterns, and conducting various financial analysis. The schema for this dataset is 10 variables and 23,053 records
+The Transactions table contains detailed records of all transactions conducted on the e-commerce platform. It provides valuable insights into sales performance, product popularity, and purchasing trends over time. The columns Transaction table have are transaction id, customer id, date of transaction and etc. The schema for this Transactions table are 10 variables and 23,053 rows.
 
 # Prod_cat_info:
-The file provides essential information about the products available on the e-commerce platform. It includes details such as product category, subcategory, product category code and sub category code. This file helps in categorizing products, understanding the product assortment, and analyzing the performance of different product categories. The schema for this dataset is 4 variables and 23 records
+The Prod_cat_info table provides essential information about the products available on the e-commerce platform. It helps categorize products, understand the product assortment, and analyze the performance of different product categories or brands. The columns that have in prod_cat_info tables are prod_cat_code, prod_sub_cat_code, prod_cat and prod_subcat. The schema for this dataset is 4 variables and 23 records
