@@ -22,3 +22,8 @@ Gain insights into product categories, assortments, and performance metrics to o
 <p align="center">
   <img src="https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/4653fe06-7a13-4ffb-9796-097a25c9820d" alt="">
 </p>
+
+**Get Started:**
+Ready to dive into the world of e-commerce analytics? Clone the EcommerceAnalyticsVault repository and embark on a journey of exploration, discovery, and innovation in the e-commerce landscape.
+
+### Objectives that Asked
