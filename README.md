@@ -1,7 +1,7 @@
 ### <div align="center"> <h1> E-Commerce Retail Data Analysis </h1> </div>
 
 <p align="center">
-  <img src="https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/4653fe06-7a13-4ffb-9796-097a25c9820d" alt="">
+  <img src="https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/ab003609-9321-4762-90e0-83d78fd80023" alt="">
 </p>
 
 Welcome to EcommerceAnalyticsVault, your premier destination for in-depth e-commerce retail data analysis. This repository is dedicated to uncovering valuable insights and trends within the fast-paced and dynamic world of e-commerce. Leveraging SQL as our primary analytical tool, we embark on a journey to explore customer behavior, sales trends, and product performance, providing actionable insights to drive strategic decision-making in the e-commerce landscape. 
