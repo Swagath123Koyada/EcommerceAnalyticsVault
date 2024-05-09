@@ -20,5 +20,5 @@ Gain insights into product categories, assortments, and performance metrics to o
 ## <div align="center"> <h1> Sql_Project_1 </h1> </div>
 
 <p align="center">
-  <img src="![1705079676002](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/b2c7ba50-0ce9-4be5-9a3f-3c564e0b132b)" >
+  <img src="https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/4653fe06-7a13-4ffb-9796-097a25c9820d" alt="">
 </p>
