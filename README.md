@@ -327,7 +327,7 @@ The first Query only gives us the no. of sub-categories but the second Query giv
 
 ![Screenshot 2024-05-10 190136](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/efc2a285-2965-44c1-98fa-b6484ed04b82)
 
-Q5. What is the maximum quantity of products ever ordered in a single day?
+Q5.a. What is the maximum quantity of products ever ordered in a single day?
 
 **Query_1**
 
@@ -336,6 +336,8 @@ SELECT TOP 1 CONVERT(VARCHAR, tran_date, 23) AS DATE, COUNT(Qty) AS Quantity FRO
 GROUP BY tran_date
 				 
 ORDER BY Quantity DESC
+
+Q5.b. On a Single day, which product was ordered the maximum no. of times
 
 **Query_2**
 
@@ -370,6 +372,419 @@ Therefore, the query calculates the maximum value of the Qty column in the "Tran
 **Output_2**
 
 ![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/c5e86bb1-8baf-47a8-880e-e15ea80453ce)
+
+Q6. What is the net total revenue generated in categories Electronics and Books?
+
+**Query**
+
+SELECT SUM(total_amt) AS Total_Revenue, prod_cat FROM Transactions t 
+                  
+Inner Join prod_cat_info p on t.prod_cat_code = p.prod_cat_code and t.prod_subcat_code = p.prod_sub_cat_code
+	              
+Group by p.prod_cat
+	              
+Having p.prod_cat IN ('Electronics', 'Books')
+
+**Methods Used.**
+
+"SELECT" STATEMENT
+                  
+"SUM" FUNCTION
+                  
+"JOINS"
+				  
+"GROUP BY" CLAUSE
+				  
+"HAVING" CLAUSE
+
+**Explanation.**
+
+"SELECT" statement retrieves data from the specified columns in the "Transactions" table.
+                  
+"SUM" is an aggregate function used to calculate the total sum of values in the total_amt column of a table.
+                  
+"Join" used to combine rows from two or more tables based on related columns between them.
+                  
+"GROUP BY" clause groups the results by the prod_cat column from the "prod_cat_info" table.
+                  
+"HAVING" clause filters the grouped results to only include rows where the product category is either 'Electronics' or 'Books'.
+
+**Output**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/5fd6fd27-79ac-4c24-81e0-5ff8b2c2d4b2)
+
+Q7. How many customers have >10 transactions with us, excluding returns?
+
+**Query**
+
+SELECT cust_id, COUNT(transaction_id) AS transaction_count FROM Transactions
+                  
+WHERE total_amt > 0
+                  
+GROUP BY cust_id
+                  
+HAVING COUNT(transaction_id) > 10
+
+**Methods Used.**
+
+"SELECT" STATEMENT
+                  
+"COUNT" FUNCTION
+				  
+"WHERE"CLAUSE
+				  
+"GROUP BY" CLAUSE
+				  
+"HAVING" CLAUSE
+
+**Explanation.**
+
+"SELECT" statement retrieves data from the specified columns in the "Transactions" table.
+                  
+"COUNT" is an aggregate function that counts the number of non-null values in the transaction_id column for each group.
+                  
+"WHERE" clause filters the rows to include only those where the value in the total_amt column is greater than 0. This ensures that only transactions with positive total amounts are considered.
+                  
+"GROUP BY" clause groups the rows of the "Transactions" table by the values in the cust_id column.
+                  
+"HAVING" clause filters the grouped results to only include rows where the count of transactions for each customer (transaction_id) is greater than 10. This ensures that only customers with more than 10 transactions are included in the result set.
+
+**Output**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/212be8f5-3312-43d0-85ac-1a5da53f219f)
+
+Q8. What is the combined revenue earned from the "Electronics " & "Clothing" categories, from "Flagship stores"?
+
+**Query**
+
+Select round(Sum(total_amt), 2) as combined_revenue, Store_type from Transactions t
+	              
+Inner join prod_cat_info p on t.prod_cat_code = p.prod_cat_code and t.prod_subcat_code = p.prod_sub_cat_code
+                  
+Where p.prod_cat IN ('Electronics', 'Clothing')
+	              
+Group by store_type
+	              
+Having store_type = 'Flagship store'
+
+**Methods Used.**
+
+"SELECT" STATEMENT
+                  
+"ROUND" FUNCTION
+                  
+"SUM" AGGREGATE FUNCTION
+				  
+"JOINS"
+				  
+"WHERE" CLAUSE
+				  
+"GROUP BY" CLAUSE
+				  
+"HAVING" CLAUSE
+
+**Explanation.**
+
+"SELECT" statement retrieves data from the specified columns in the "Transactions" table.
+                  
+"ROUND" is a function used to round a numeric value to a specified number of decimal places.
+                  
+"SUM" is an aggregate function used to calculate the total sum of values in the total_amt column of a table.
+                  
+"INNER JOIN" used to combine rows from two or more tables based on related columns between them.
+                  
+"WHERE" clause filters the joined result to include only rows where the prod_cat in the "prod_cat_info" table is either 'Electronics' or 'Clothing'.
+                  
+"GROUP BY" clause groups the rows of the result set by the store_type column from the "Transactions" table.
+                  
+"HAVING" clause filters the grouped results to only include rows where the store_type is 'Flagship store'.
+                  
+Therefore, the query calculates the combined revenue for 'Electronics' and 'Clothing' products sold at 'Flagship store' locations, grouping the results by store type.
+
+**Output**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/0bb81e9f-b582-4117-bdbe-c009832ee501)
+
+Q9. What is the total revenue generated from "Male" customers in "Electronics" category? Output should display total revenue by prod sub-cat.
+
+**Query**
+
+SELECT prod_cat, prod_subcat, SUM(total_amt) AS total_revenue FROM Customer c
+                  
+JOIN Transactions t ON c.customer_Id = t.cust_id
+                  
+JOIN prod_cat_info p ON t.prod_cat_code = p.prod_cat_code AND t.prod_subcat_code = p.prod_sub_cat_code
+                  
+WHERE total_amt > 0 and Gender = 'M'
+		          
+GROUP BY prod_cat, prod_subcat
+		          
+Having prod_cat = 'Electronics'
+
+**Methods Used.**
+
+"SELECT" STATEMENT
+                  
+"SUM" FUNCTION
+				  
+"JOINS"
+				  
+"WHERE" CLAUSE
+				  
+"GROUP BY" CLAUSE
+				  
+"HAVING" CLAUSE
+
+**Explanation.**
+
+"SELECT" statement retrieves data from the specified columns in the "Transactions" table.
+                  
+"SUM" is an aggregate function used to calculate the total sum of values in the total_amt column of a table.
+                  
+"JOIN" used to combine rows from two or more tables based on related columns between them.
+                  
+"WHERE" clause filters the rows to include only those where total_amt is greater than 0 and Gender is 'M' (for male customers).
+                  
+"GROUP BY" clause groups the result set by prod_cat and prod_subcat, meaning that the sum of total_amt will be calculated for each unique combination of product category and subcategory.
+                  
+"HAVING" clause filters the grouped results to include only rows where prod_cat is 'Electronics'.
+
+**Output**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/024886b6-519a-47f0-a47e-08b19176409e)
+
+Q10. What is percentage of sales and returns by product sub catgory; display only top 5 sub categories in terms of sales?
+
+**Query**
+
+Select Top 5 (prod_subcat), Sum(total_amt) as Sales from Transactions t
+		          
+Inner join prod_cat_info p on t.prod_cat_code = p.prod_cat_code and t.prod_subcat_code = p.prod_sub_cat_code
+		          
+where t.total_amt > 0
+		          
+group by prod_subcat
+		          
+Order by Sales Desc
+		 
+WITH perABS
+
+as(SELECT TOP 5 (prod_subcat),
+		              
+    ABS(SUM(CASE WHEN total_amt < 0 THEN total_amt ELSE 0 END)) as Returns,
+			          
+    SUM(CASE WHEN total_amt > 0 THEN total_amt ELSE 0 END) as Sales
+			          
+    FROM Transactions t
+			          
+    INNER JOIN prod_cat_info p on t.prod_cat_code = p.prod_cat_code and t.prod_subcat_code = p.prod_sub_cat_code
+			          
+    GROUP BY prod_subcat
+			          
+    ORDER BY Sales DESC)
+					  
+    SELECT prod_subcat, ROUND((((Returns + Sales)/ Returns)*100), 2) AS Return_percent,
+			
+    ROUND((((Returns + Sales)/ Sales)*100), 2) AS Sales_percent FROM perABS
+
+**Methods Used.**
+
+"SELECT" STATEMENT
+                  
+"SUM" FUNCTION
+				  
+"JOINS"
+				  
+"WHERE" CLAUSE
+				  
+"GROUP BY" CLAUSE
+				  
+"ORDER BY" CLAUSE
+				  
+"CTE's"
+
+**Explanation.**
+
+**"Main Query"**
+                  
+"SELECT" statement selects the top 5 prod_subcat values and calculates the sum of total_amt as Sales.
+                  
+"JOIN" are used to join these tables based on their related columns: prod_cat_code and prod_subcat_code.
+                  
+"WHERE" clause filters the rows to include only those where total_amt is greater than 0.
+                  
+"GROUP BY" clause groups the result set by prod_subcat, allowing the calculation of the sum of total_amt for each product subcategory.
+                  
+"ORDER BY" clause sorts the grouped results by Sales in descending order.
+                  
+**"Common Table Expression (CTE)":** The query defines a CTE named perABS.
+                  
+"SELECT" statement within CTE: It selects the top 5 prod_subcat values.
+                  
+"ABS" and "SUM" :It calculates the absolute sum of quantities for returns and the sum of quantities for sales for each product subcategory.
+                  
+The "JOIN" are used to join these tables based on their related columns: prod_cat_code and prod_subcat_code.
+                  
+"GROUP BY" clause within CTE: It groups the result set by prod_subcat, allowing the calculation of returns and sales for each product subcategory.
+                  
+"ORDER BY" clause within CTE: It sorts the grouped results by Sales in descending order.
+                  
+The CTE is first evaluated to obtain the returns and sales for the top 5 product subcategories.
+                  
+Then, the main query selects data from the CTE and calculates the percentages.
+                  
+The percentages are calculated using the formula: (Returns or Sales / (Returns + Sales)) * 100.
+                  
+The ROUND function is applied to round the calculated percentages to two decimal places.
+
+**Output_for_Main Query**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/9ffd228d-c884-4e20-8f18-c39977515179)
+
+**Output_for_CTE**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/19e2418a-02bc-4f53-82dc-9946ed19e4aa)
+
+Q11. For all customers aged between 25 to 35 years find what is the net total revenue generated by these consumers in last 30 days of transactions from max transaction date available in the data?
+
+**Query**
+
+SELECT TOP 30 Convert(Varchar, tran_date, 23) AS Max_Transaction_Date FROM Transactions
+			       
+GROUP BY tran_date
+			       
+ORDER BY tran_date DESC
+
+WITH ABC
+
+AS(SELECT TOP 30 (tran_date), SUM(total_amt) AS Total_amount FROM Customer c
+			       
+    INNER JOIN Transactions t ON t.cust_id = c.customer_id
+			       
+    WHERE DATEDIFF(YEAR,DOB,GETDATE()) BETWEEN 25 AND 35
+			       
+    GROUP BY tran_date
+			       
+    ORDER BY tran_date DESC)
+			       
+    SELECT SUM(Total_amount) AS Final_revenue FROM ABC
+
+**Methods Used.**
+
+"SELECT" STATEMENT
+                   
+"SUM" FUNCTION
+				   
+"WHERE" CLAUSE
+				   
+"GETDATE" FUNCTION
+				   
+"GROUP BY" CLAUSE
+				   
+"ORDER BY" CLAUSE
+				   
+"DATEDIFF" FUNCTION
+				   
+"MAX" FUNCTION
+
+**Explanation.**
+
+**"Main Query":**
+                   
+It selects the top 30 distinct tran_date values from the "Transactions" table.
+                   
+The GROUP BY clause ensures that only distinct tran_date values are returned.
+                   
+The ORDER BY clause orders the results by tran_date in descending order.
+                   
+**"Common Table Expression (CTE)":** The query defines a CTE named ABC.
+                   
+The CTE calculates the total amount for each of the top 30 tran_date values.
+                   
+It selects the top 30 distinct tran_date values from the "Transactions" table.
+                   
+It joins the "Customer" and "Transactions" tables based on the customer ID (cust_id) to obtain the total amount for each transaction date.
+                   
+It filters the customers based on their age, selecting only those aged between 25 and 35 years.
+                   
+The GROUP BY clause groups the results by tran_date, aggregating the total amount for each transaction date.
+                   
+The ORDER BY clause orders the results by tran_date in descending order.
+                   
+**"Final Query":**
+                   
+It calculates the sum of the Total_amount column from the CTE ABC.
+                   
+This gives the final revenue generated from transactions corresponding to the top 30 transaction dates involving customers aged between 25 and 35 years.
+
+**Output_for_Main Query**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/11e8cb31-5616-46d7-9760-f2ffb9e19d8a)
+
+**Output_for_CTE**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/9b1841d3-ba23-4c9d-88a0-7004164f9614)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
