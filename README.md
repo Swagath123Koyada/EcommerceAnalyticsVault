@@ -725,64 +725,347 @@ This gives the final revenue generated from transactions corresponding to the to
 
 ![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/9b1841d3-ba23-4c9d-88a0-7004164f9614)
 
+Q12. Which product category has seen the max value of returns in the last 3 months of transactions?
 
+**Query**
 
+SELECT prod_cat, COUNT(Qty) AS No_of_returns FROM Transactions t
+                   
+INNER JOIN prod_cat_info p ON t.prod_cat_code = p.prod_cat_code
+		           
+WHERE total_amt < 0 AND DATEDIFF(month, '2014-09-01',tran_date)=3
+		           
+GROUP BY prod_cat
 
+WITH ABC
 
+AS(SELECT prod_cat, transaction_id, total_amt FROM Transactions t
+		           
+    INNER JOIN prod_cat_info p ON t.prod_cat_code = p.prod_cat_code
+		           
+    WHERE total_amt < 0 AND DATEDIFF(MONTH, '2014-09-01',tran_date)=3)
+		           
+    SELECT ABS(SUM(total_amt)) AS Return_amount_cat FROM ABC
 
+**Methods Used.**
 
+"SELECT" STATEMENT
+                   
+"COUNT" FUNCTION
+				   
+"JOIN"
+				   
+"WHERE" CLAUSE
+				  
+"GROUP BY" CLAUSE
+				   
+"DATEDIFF" FUNCTION
+				   
+"SUM" FUNCTION
 
+**Explanation.**
 
+**"Main Query":**
 
+"SELECT" AND "COUNT" selects the product category (prod_cat) and counts the quantity (Qty) of returns for each product category.
+                   
+"JOIN" - Joins the "Transactions" and "prod_cat_info" tables based on the product category code (prod_cat_code).
+                   
+"WHERE" Clause filters the rows to include only those where the total_amt is less than 0.
+                   
+It further filters the rows based on the transaction date (tran_date) being exactly 3 months after September 1, 2014.
+                   '
+"GROUP BY" Clause groups the product category.
+                   
+**"Common Table Expression (CTE)":** The query defines a CTE named ABC.
+                   
+The CTE selects the product category, transaction ID, and total amount for returns.
+                   
+It joins the "Transactions" and "prod_cat_info" tables similar to the main query.
+                   
+It filters the rows to include only those where the total_amt is less than 0 (indicating returns) and the transaction date is exactly 3 months after September 1, 2014.
+                   
+**"Final Query":**
+                   
+It selects the absolute sum of total return amount (total_amt) from the CTE ABC.
+                   
+The ABS() function ensures that the return amount is treated as a positive value.
+                   
+This gives the total return amount for all product categories exactly 3 months after September 1, 2014.
 
+**Output_for_Main Query**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/90f0d95f-593e-4104-bb19-1c9a317f7baf)
 
+**Output_for_CTE**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/e146a4ea-8e7f-4c63-be70-7b76ee8507cb)
 
+Q13. Which store-type sells the maximum products; by value of sales amount and by quantity sold?
 
+**Query**
 
+SELECT Top 1 store_type, ROUND(SUM(total_amt), 2) AS total_sales FROM Transactions
+                   
+GROUP BY store_type
+                   
+ORDER BY total_sales DESC
 
+WITH SalesByAmount AS (
+    
+    SELECT store_type, ROUND(SUM(total_amt), 2) AS total_sales FROM Transactions
+    
+    GROUP BY store_type
+                   
+),
+                   
+    SalesByQuantity AS (
+                   
+    SELECT store_type, SUM(Qty) AS total_quantity_sold FROM Transactions
+                   
+    GROUP BY store_type
+                   
+    )
+                   
+    SELECT 'By Amount' AS sales_criteria, sba.store_type, sba.total_sales FROM SalesByAmount sba
+                   
+    WHERE sba.total_sales = (SELECT MAX(total_sales) FROM SalesByAmount)
+                   
+    UNION ALL
+                   
+    SELECT 'By Qty' AS sales_criteria, sbq.store_type, sbq.total_quantity_sold FROM SalesByQuantity sbq
+                   
+    WHERE sbq.total_quantity_sold = (SELECT MAX(total_quantity_sold) FROM SalesByQuantity)
 
+**Methods Used.**
 
+"SELECT" STATEMENT
+                   
+"SUM" FUNCTION
+				   
+"GROUP BY" CLAUSE
+				   
+"ORDER BY" CLAUSE
+				   
+"WHERE" CLAUSE
+				   
+"MAX" FUNCTION
 
+**Explanation.**
 
+**"Main Query":**
 
+It selects the top 1 store_type and the rounded sum of total_amt as total_sales from the "Transactions" table.
+                   
+The results are grouped by store_type.
+                   
+The results are ordered by total_sales in descending order.
 
+**"Common Table Expression (CTE)":**
 
+Two CTEs are defined: SalesByAmount and SalesByQuantity.
+                   
+SalesByAmount calculates the total sales amount for each store_type by summing the total_amt column.
+                   
+SalesByQuantity calculates the total quantity sold for each store_type by summing the Qty column.
 
+**"Final Query":**
 
+It selects data from the two CTEs.
+                   
+For SalesByAmount, it selects the store_type and total_sales.
+                   
+It filters the results to only include the row where the total_sales is equal to the maximum total_sales among all store_type values.
+                   
+For SalesByQuantity, it selects the store_type and total_quantity_sold.
+                   
+It filters the results to only include the row where the total_quantity_sold is equal to the maximum total_quantity_sold among all store_type values.
+                   
+"UNION ALL":
+                   
+The results from the two CTEs are combined using the UNION ALL operator.
+                   
+This combines the results vertically, creating one result set that includes data from both CTEs.
 
+**Output_for_Main Query**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/0a4470bc-8aea-49af-9311-903cb79fcfac)
 
+**Output_for_CTE**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/80681467-e0b3-4146-a2f7-326aa3108dbd)
 
+Q14. What are the categories for which average revenue is above the overall average.
 
+**Query**
 
+SELECT ROUND(AVG(total_amt), 2) AS Overall_Avg_Revenue FROM Transactions;
 
+SELECT prod_cat, AVG(total_amt) AS Avg_Revenue_by_Category FROM Transactions t
 
+Inner join prod_cat_info p on t.prod_cat_code = p.prod_cat_code and t.prod_subcat_code = p.prod_sub_cat_code
+                   
+GROUP BY prod_cat;
 
+WITH CategoryAverage AS (
 
+   SELECT prod_cat, ROUND(AVG(total_amt), 2) AS Avg_Revenue_by_Category FROM Transactions t
+				   
+   Inner join prod_cat_info p on t.prod_cat_code = p.prod_cat_code and t.prod_subcat_code = p.prod_sub_cat_code
+                   
+   GROUP BY prod_cat
 
+)
+                   
+   SELECT prod_cat, Avg_Revenue_by_Category FROM CategoryAverage
+                   
+   WHERE avg_revenue_by_category > (SELECT AVG(total_amt) FROM Transactions);
 
+**Methods Used.**
 
+"SELECT" STATEMENT
+                   
+"ROUND" FUNCTION
+				   
+"SUM" FUNCTION
+				   
+"AVERAGE" FUNCTION
+				   
+"JOIN"
+				   
+"GROUP BY" CLAUSE
+				   
+"WHERE"CLAUSE
 
+**Explanation.**
 
+**"Common Table Expression (CTE)":**
+                   
+The query defines a CTE named CategoryAverage.
+                   
+It calculates the average revenue for each product category (prod_cat) by rounding the average of the total_amt column to two decimal places.
+                   
+It calculates the overall average revenue across all transactions using a subquery within the SELECT clause. This subquery retrieves the average of the total_amt column from the entire "Transactions" table and also rounds it to two decimal places.
+                
+The results are grouped by prod_cat.
 
+**"Final Query":**
+                   
+The main query selects prod_cat and average_revenue from the CategoryAverage CTE.
+                   
+It filters the results using a WHERE clause to include only those rows where the average_revenue for a product category is greater than the overall_average_revenue across all transactions.
+                   
+This comparison allows identifying product categories whose average revenue is above the overall average revenue.
 
+**Output_for_Main Query_1**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/992d380a-ea25-4942-a69f-22684aaf2757)
 
+**Output_for_Main Query_2**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/b851c6b2-f474-4083-97a6-cfa5f746f55f)
 
+**Output_for_CTE**
 
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/1470e234-60a0-4ba1-bec2-cdf2627dc8ac)
 
+Q15. Find the average and total revenue by each subcategory for the categories which are among top 5 categories in terms of quantity sold.
 
+**Query**
 
+SELECT TOP 5(prod_cat), COUNT(Qty) AS Quantity_Sold FROM Transactions t
+                   
+INNER JOIN prod_cat_info p ON t.prod_cat_code = t.prod_cat_code
+                   
+WHERE total_amt > 0
+                   
+GROUP BY prod_cat
+                   
+ORDER BY Quantity_Sold DESC
+                   
+SELECT prod_cat, prod_subcat, ROUND(SUM(total_amt), 3) AS Total_amount, ROUND(AVG(total_amt), 3) AS Avg_amount FROM Transactions t
+                   
+INNER JOIN prod_cat_info p ON t.prod_cat_code = p.prod_cat_code
+                   
+WHERE total_amt > 0 AND prod_cat IN ('Books', 'Electronics', 'Home and kitchen', 'Footwear', 'Clothing')
+                   
+GROUP BY prod_cat, prod_subcat
+                   
+ORDER BY CASE WHEN prod_cat = 'Books' THEN 1
+                                 
+              WHEN prod_cat = 'Electronics' THEN 2
+			                     
+              WHEN prod_cat = 'Home and kitchen' THEN 3
+			                     
+              WHEN prod_cat = 'Footwear' THEN 4
+			                     
+              ELSE 5
+			                     
+              END
 
+**Methods Used.**
 
+"SELECT" STATEMENT
+                   
+"COUNT" FUNCTION
 
+"JOIN"
+				   
+"WHERE" CLAUSE
 
+"GROUP BY" CLAUSE
+				   
+"ORDER BY" CLAUSE
+				   
+"ROUND" FUNCTION
+				   
+"SUM" FUNCTION
+				   
+"AVERAGE" FUNCTION
 
+**Explanation.**
 
+**First Query (Top 5 Product Categories by Quantity Sold):**
+                   
+It selects the top 5 product categories (prod_cat) based on the count of quantities sold (Qty) from the "Transactions" table.
+                   
+Joins the "Transactions" and "prod_cat_info" tables based on the product category code.
+                   
+Filters the rows to include only those with positive total_amt values (indicating sales).
+                   
+Groups the results by product category.
+                   
+Orders the results by Quantity_Sold in descending order.
+                   
+**Second Query (Total and Average Amount by Product Subcategory):**
+                   
+It selects the product category (prod_cat), product subcategory (prod_subcat), total amount (total_amt), and average amount (total_amt) from the "Transactions" table.
+                   
+Joins the "Transactions" and "prod_cat_info" tables based on the product category code.
+                   
+Filters the rows to include only those with positive total_amt values and where the product category is one of ('Books', 'Electronics', 'Home and kitchen', 'Footwear', 'Clothing').
+                   
+Groups the results by product category and product subcategory.
+                   
+Orders the results using a CASE statement to sort the product categories in a specific order ('Books', 'Electronics', 'Home and kitchen', 'Footwear', 'Clothing').
+
+**Output_for_Main Query_1**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/fb00457b-04a3-4628-b7fc-7d9b199cf59e)
+
+**Output_for_Main Query_2**
+
+![image](https://github.com/Swagath123Koyada/EcommerceAnalyticsVault/assets/164196153/11240806-998f-441b-86ab-b5bcfa5f5549)
+
+ ### <div align="center"> <h1> **CONCLUSION** </h1> </div>
+
+In this project, we conducted data analysis on transaction data using SQL queries in SSMS (SQL Server Management Studio). The objective was to extract meaningful insights and metrics from the dataset. We performed various tasks such as joining tables, aggregating data, filtering records, and sorting results to fulfill specific analysis requirements.
+
+Throughout the project, we demonstrated proficiency in SQL query writing, leveraging a variety of SQL functions, clauses, and operators to manipulate and analyze the dataset effectively. We utilized Common Table Expressions (CTEs), aggregation functions (e.g., SUM, COUNT, AVG), and logical operations to extract insights such as total revenue, average revenue, top-selling categories, and customer behavior patterns.
+
+Additionally, we utilized SQL features such as joins to combine related tables, WHERE clause to filter data based on specified conditions, ORDER BY clause to sort results, and TOP keyword to limit the number of rows returned.
+
+By applying these SQL techniques, we were able to address the project objectives, derive valuable insights from the transaction data, and provide actionable recommendations based on the analysis results. Overall, this project demonstrates the power and versatility of SQL for data analysis tasks in SSMS.
 
 
 
