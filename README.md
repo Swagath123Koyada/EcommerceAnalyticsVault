@@ -22,7 +22,7 @@ Dive into detailed transaction records to analyze sales performance, product pop
 **Prod_cat_info:**
 Gain insights into product categories, assortments, and performance metrics to optimize product offerings, marketing strategies, and inventory management practices. The Prod_cat_info table provides essential information about the products available on the e-commerce platform. It helps categorize products, understand the product assortment, and analyze the performance of different product categories or brands. The columns that have in prod_cat_info tables are prod_cat_code, prod_sub_cat_code, prod_cat and prod_subcat. The schema for this dataset is 4 variables and 23 records
 
-## <div align="center"> <h1> Sql_Project_1 </h1> </div>
+## <div align="center"> <h1> SQL_Project_1 </h1> </div>
 
 **Get Started:**
 Ready to dive into the world of e-commerce analytics? Clone the EcommerceAnalyticsVault repository and embark on a journey of exploration, discovery, and innovation in the e-commerce landscape.
